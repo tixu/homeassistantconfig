@@ -74,5 +74,7 @@ switch:
     qos: 0
     retain: true
 
-
+device_tracker:
+  - platform: owntracks
+    waypoints: True
 zone: !include_dir_list zones
