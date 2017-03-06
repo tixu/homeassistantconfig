@@ -55,7 +55,8 @@ tts:
 mqtt:
   broker: 127.0.0.1
   port: 1883
-
+  username: ha
+  password: !secret mqtt_password
 
 influxdb:
   host: 10.1.14.93
@@ -74,9 +75,4 @@ switch:
     retain: true
 
 
-zone:
-  name: School
-  latitude: 32.8773367
-  longitude: -117.2494053
-  radius: 250
-  icon: mdi:school
+zone: !include_dir_list zones
