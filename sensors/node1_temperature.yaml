@@ -1,0 +1,6 @@
+platform: mqtt
+state_topic: "sensor1/temperature"
+name: 'Salon Temperature'
+unit_of_measurement: '  C'
+value_template: '{{ value_json.temperature }}'
+
