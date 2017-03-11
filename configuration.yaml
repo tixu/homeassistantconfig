@@ -61,8 +61,8 @@ influxdb:
 switch:
   - platform: mqtt
     name: "Salon Switch"
-    command_topic: "sensor1/command"
-    state_topic: "sensor1/status"
+    command_topic: "ground/node1/relay/command"
+    state_topic: "ground/node1/relay/status"
     payload_on: "0"
     payload_off: "1"
     optimistic: false

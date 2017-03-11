@@ -1,0 +1,6 @@
+platform: mqtt
+state_topic: "ground/node1/temperature"
+name: 'Temperature Ressentie au Salon'
+unit_of_measurement: '  C'
+value_template: '{{ value_json.heatindex }}'
+
