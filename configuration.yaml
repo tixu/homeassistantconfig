@@ -41,8 +41,10 @@ logbook:
 # Track the sun
 sun:
 
-# Weather Prediction
+# Sensor
 sensor: !include_dir_list sensors
+# Binary sensors
+binary_sensor: !include_dir_list binarysensors
 # Text to speech
 tts:
   platform: google

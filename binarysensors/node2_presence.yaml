@@ -1,0 +1,5 @@
+platform: mqtt
+state_topic: "ground/node1/presence"
+name: 'Salon_2 presence	'
+device_class: motion
+
