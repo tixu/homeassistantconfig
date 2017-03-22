@@ -100,4 +100,15 @@ automation:
     action:
      service: homeassistant.turn_off
      entity_id: switch.salon_switch
-
+  - alias : 'check status after start up'
+    hide_entity: True
+    trigger:
+      platform: event
+      event_type: homeassistant_start
+    action:
+      service: mqtt.publish
+      data:
+        payload: ""
+        topic: "cmnd/sonoffs/power"
+        qos: 0
+        retain: 0
