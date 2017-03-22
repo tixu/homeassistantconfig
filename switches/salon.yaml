@@ -1,0 +1,10 @@
+ platform: mqtt
+ name: "Salon Switch"
+ command_topic: "ground/node1/relay/command"
+ state_topic: "ground/node1/relay/status"
+ payload_on: "0"
+ payload_off: "1"
+ optimistic: false
+ qos: 1
+ retain: true
+

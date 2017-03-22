@@ -54,31 +54,26 @@ mqtt:
   port: 1883
   username: ha
   password: !secret mqtt_password
+  client_id: home-assistant
+  keepalive: 60
+  protocol: 3.1 
+  birth_message:
+    topic: "tele/hass/LWT"
+    payload: "Online"
+    qos: 1
+    retain: true
+  will_message:
+    topic: "tele/hass/LWT"
+    payload: "Offline"
+    qos: 1
+    retain: true
 
 influxdb:
   host: 10.1.14.93
   port: 8086
   database: home_assistant
 
-switch:
-  - platform: mqtt
-    name: "Salon Switch"
-    command_topic: "ground/node1/relay/command"
-    state_topic: "ground/node1/relay/status"
-    payload_on: "0"
-    payload_off: "1"
-    optimistic: false
-    qos: 0
-    retain: true
-  - platform: mqtt
-    name: "Sonoff power"
-    state_topic: "stat/sonoff01/POWER"
-    command_topic: "cmnd/sonoff01/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
-
+switch: !include_dir_list switches
 
 device_tracker: !include_dir_list device_trackers
 
