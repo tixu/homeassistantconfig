@@ -70,9 +70,39 @@ switch:
     optimistic: false
     qos: 0
     retain: true
+  - platform: mqtt
+    name: "Sonoff power"
+    state_topic: "stat/sonoff01/POWER"
+    command_topic: "cmnd/sonoff01/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
+
 
 device_tracker: !include_dir_list device_trackers
 
 zone: !include_dir_list zones
 
+
+
+automation:
+  # Change the light in the kitchen and living room to 150 brightness and color red.
+  - alias: 'turn on the light after  sunset '
+    trigger:
+      platform: sun
+      event: sunset
+      offset: "-00:45:00"
+    action:
+      service: homeassistant.turn_on
+      entity_id: switch.salon_switch
+  # Change the light in the kitchen and living room to 150 brightness and color red.
+  - alias: 'turn off the light after sun rise ' 
+    trigger:
+     platform: sun
+     event: sunrise
+     offset: "00:45:00"
+    action:
+     service: homeassistant.turn_off
+     entity_id: switch.salon_switch
 
