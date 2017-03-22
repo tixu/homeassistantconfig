@@ -50,7 +50,7 @@ tts:
   platform: google
 
 mqtt:
-  broker: 127.0.0.1
+  broker: mqtt.office.talpau
   port: 1883
   username: ha
   password: !secret mqtt_password
