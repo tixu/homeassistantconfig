@@ -11,8 +11,33 @@ homeassistant:
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   time_zone: Europe/Brussels
 
+  customize:
+  # Alarm clock sensors
+   sensor.time:
+     friendly_name: time
+   sensor.alarm_clock_hour:
+     hidden: true
+   sensor.alarm_clock_minute:
+     hidden: true
+   sensor.alarm_clock_time_long:
+     hidden: true
+   sensor.alarm_clock_time:
+     friendly_name: 'Alarm Clock Setting'
+     icon: mdi:alarm
+   # Alarm clock inputs
+   input_slider.alarm_clock_hour:
+     friendly_name: 'Hour'
+     icon: mdi:timer
+   input_slider.alarm_clock_minute:
+     friendly_name: 'Minute' 
+     icon: mdi:timer
+   input_boolean.alarm_clock_status:
+     friendly_name: 'Alarm Clock Status'
+     icon: mdi:alarm-check
+
+
 # Show links to resources in log and frontend
-introduction:
+#introduction:
 
 # Enables the frontend
 frontend:
@@ -27,7 +52,7 @@ http:
 updater:
 
 # Discover some devices automatically
-discovery:
+#discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -79,7 +104,56 @@ device_tracker: !include_dir_list device_trackers
 
 zone: !include_dir_list zones
 
+input_slider:
+  alarm_clock_hour:
+    initial: 4
+    min: 0
+    max: 23
+    step: 1
+  alarm_clock_minute:
+   initial: 55
+   min: 0
+   max: 55
+   step: 5
 
+input_boolean:
+  alarm_clock_status:
+    initial: on
+
+media_player:
+ - platform: soundtouch
+   host: 10.1.14.129
+   port: 8090
+   name: Soundtouch Living Room
+
+group:
+
+# Alarm clock
+  alarm: 
+   view: yes 
+   name: 'alarm'
+   entities:
+    - group.alarm_clock
+  alarm_clock:
+    name: 'Alarm Light'
+    entities:
+     - sensor.time
+     - sensor.alarm_clock_time
+     - input_slider.alarm_clock_hour
+     - input_slider.alarm_clock_minute
+     - input_boolean.alarm_clock_status
+  medias:
+    view: yes
+    name: 'medias'
+    entities:
+      - media_player.soundtouch_living_room
+
+script:
+  wake_up:
+    sequence: 
+      - service: switch.turn_on
+        data:
+          entity_id: switch.sonoff_power
 
 automation:
   # Change the light in the kitchen and living room to 150 brightness and color red.
@@ -100,7 +174,7 @@ automation:
     action:
      service: homeassistant.turn_off
      entity_id: switch.salon_switch
-  - alias : 'check status after start up'
+  - alias: 'check status after start up'
     hide_entity: True
     trigger:
       platform: event
@@ -112,3 +186,15 @@ automation:
         topic: "cmnd/sonoffs/power"
         qos: 0
         retain: 0
+
+  - alias: 'Turnon the light with alarm'
+    hide_entity: False
+    trigger:
+      platform: template
+      value_template: '{{ states.sensor.time.state == states.sensor.alarm_clock_time_long.state }}'
+    condition:
+      condition: state
+      entity_id: input_boolean.alarm_clock_status
+      state: 'on'
+    action:
+      service: script.wake_up
